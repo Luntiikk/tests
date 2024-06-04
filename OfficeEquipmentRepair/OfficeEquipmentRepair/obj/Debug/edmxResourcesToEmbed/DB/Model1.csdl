@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="demModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="commentID" />
+    </Key>
+    <Property Name="commentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="masterID" Type="Int32" Nullable="false" />
+    <Property Name="requestID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Request" Relationship="Self.FK_Comments_Requests" FromRole="Comments" ToRole="Requests" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Comments_Users" FromRole="Comments" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Problem">
+    <Key>
+      <PropertyRef Name="idProblem" />
+    </Key>
+    <Property Name="idProblem" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="problemDescryption" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Requests" Relationship="Self.FK_Requests_Problems" FromRole="Problems" ToRole="Requests" />
+  </EntityType>
+  <EntityType Name="Request">
+    <Key>
+      <PropertyRef Name="requestID" />
+    </Key>
+    <Property Name="requestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="idTechType" Type="Int32" Nullable="false" />
+    <Property Name="orgTechModel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="idProblem" Type="Int32" Nullable="false" />
+    <Property Name="idStatus" Type="Int32" Nullable="false" />
+    <Property Name="completionDate" Type="DateTime" Precision="0" />
+    <Property Name="repairParts" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="masterID" Type="Int32" />
+    <Property Name="clientID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Requests" FromRole="Requests" ToRole="Comments" />
+    <NavigationProperty Name="Problem" Relationship="Self.FK_Requests_Problems" FromRole="Requests" ToRole="Problems" />
+    <NavigationProperty Name="Status" Relationship="Self.FK_Requests_Statuses" FromRole="Requests" ToRole="Statuses" />
+    <NavigationProperty Name="TypeTech" Relationship="Self.FK_Requests_TypeTechs" FromRole="Requests" ToRole="TypeTechs" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Requests_Users" FromRole="Requests" ToRole="Users" />
+    <NavigationProperty Name="User1" Relationship="Self.FK_Requests_Users1" FromRole="Requests" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Status">
+    <Key>
+      <PropertyRef Name="idStatus" />
+    </Key>
+    <Property Name="idStatus" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="requestStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Requests" Relationship="Self.FK_Requests_Statuses" FromRole="Statuses" ToRole="Requests" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Type">
+    <Key>
+      <PropertyRef Name="idType" />
+    </Key>
+    <Property Name="idType" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="type1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Users_Types" FromRole="Types" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="TypeTech">
+    <Key>
+      <PropertyRef Name="idType" />
+    </Key>
+    <Property Name="idType" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="orgTechType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Requests" Relationship="Self.FK_Requests_TypeTechs" FromRole="TypeTechs" ToRole="Requests" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="userID" />
+    </Key>
+    <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="login" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="idType" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Users" FromRole="Users" ToRole="Comments" />
+    <NavigationProperty Name="Requests" Relationship="Self.FK_Requests_Users" FromRole="Users" ToRole="Requests" />
+    <NavigationProperty Name="Requests1" Relationship="Self.FK_Requests_Users1" FromRole="Users" ToRole="Requests" />
+    <NavigationProperty Name="Type" Relationship="Self.FK_Users_Types" FromRole="Users" ToRole="Types" />
+  </EntityType>
+  <Association Name="FK_Comments_Requests">
+    <End Role="Requests" Type="Self.Request" Multiplicity="1" />
+    <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Requests">
+        <PropertyRef Name="requestID" />
+      </Principal>
+      <Dependent Role="Comments">
+        <PropertyRef Name="requestID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Comments_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userID" />
+      </Principal>
+      <Dependent Role="Comments">
+        <PropertyRef Name="masterID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requests_Problems">
+    <End Role="Problems" Type="Self.Problem" Multiplicity="1" />
+    <End Role="Requests" Type="Self.Request" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Problems">
+        <PropertyRef Name="idProblem" />
+      </Principal>
+      <Dependent Role="Requests">
+        <PropertyRef Name="idProblem" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requests_Statuses">
+    <End Role="Statuses" Type="Self.Status" Multiplicity="1" />
+    <End Role="Requests" Type="Self.Request" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Statuses">
+        <PropertyRef Name="idStatus" />
+      </Principal>
+      <Dependent Role="Requests">
+        <PropertyRef Name="idStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requests_TypeTechs">
+    <End Role="TypeTechs" Type="Self.TypeTech" Multiplicity="1" />
+    <End Role="Requests" Type="Self.Request" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TypeTechs">
+        <PropertyRef Name="idType" />
+      </Principal>
+      <Dependent Role="Requests">
+        <PropertyRef Name="idTechType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requests_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Requests" Type="Self.Request" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userID" />
+      </Principal>
+      <Dependent Role="Requests">
+        <PropertyRef Name="masterID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requests_Users1">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="Requests" Type="Self.Request" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userID" />
+      </Principal>
+      <Dependent Role="Requests">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_Types">
+    <End Role="Types" Type="Self.Type" Multiplicity="1" />
+    <End Role="Users" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Types">
+        <PropertyRef Name="idType" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="idType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="demEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Comments" EntityType="Self.Comment" />
+    <EntitySet Name="Problems" EntityType="Self.Problem" />
+    <EntitySet Name="Requests" EntityType="Self.Request" />
+    <EntitySet Name="Statuses" EntityType="Self.Status" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Types" EntityType="Self.Type" />
+    <EntitySet Name="TypeTechs" EntityType="Self.TypeTech" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_Comments_Requests" Association="Self.FK_Comments_Requests">
+      <End Role="Requests" EntitySet="Requests" />
+      <End Role="Comments" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Comments_Users" Association="Self.FK_Comments_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Comments" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requests_Problems" Association="Self.FK_Requests_Problems">
+      <End Role="Problems" EntitySet="Problems" />
+      <End Role="Requests" EntitySet="Requests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requests_Statuses" Association="Self.FK_Requests_Statuses">
+      <End Role="Statuses" EntitySet="Statuses" />
+      <End Role="Requests" EntitySet="Requests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requests_TypeTechs" Association="Self.FK_Requests_TypeTechs">
+      <End Role="TypeTechs" EntitySet="TypeTechs" />
+      <End Role="Requests" EntitySet="Requests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requests_Users" Association="Self.FK_Requests_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Requests" EntitySet="Requests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requests_Users1" Association="Self.FK_Requests_Users1">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Requests" EntitySet="Requests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_Types" Association="Self.FK_Users_Types">
+      <End Role="Types" EntitySet="Types" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
